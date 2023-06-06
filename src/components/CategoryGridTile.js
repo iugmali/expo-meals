@@ -7,7 +7,7 @@ const CategoryGridTile = ({title, color, onPress}) => {
         android_ripple={{color: '#ccc'}}
         style={({pressed}) => [
           styles.button,
-          pressed ? styles.buttonPressed : null
+          (pressed && Platform.OS === 'ios') ? styles.buttonPressed : null
         ]}
         onPress={onPress}
       >
