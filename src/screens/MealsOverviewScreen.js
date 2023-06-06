@@ -18,14 +18,18 @@ const MealsOverviewScreen = ({route, navigation}) => {
 
 
   const renderMealItem = ({item}) => {
+    const pressHandler = () => {
+      navigation.navigate('MealDetails', {
+        mealId: item.id
+      })
+    }
     return (
-      <MealItem {...item} />
+      <MealItem {...item} onPress={pressHandler} />
     )
   }
 
   return (
     <View style={styles.container}>
-      <Text>Meals Overview: {categoryId}</Text>
       <FlatList
         data={displayedMeals}
         keyExtractor={({id}) => id}

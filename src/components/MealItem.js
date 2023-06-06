@@ -1,9 +1,10 @@
 import {Image, Platform, Pressable, StyleSheet, Text, View} from "react-native";
 
-const MealItem = ({title, imageUrl, duration, complexity, affordability}) => {
+const MealItem = ({title, imageUrl, duration, complexity, affordability, onPress}) => {
   return (
     <View style={styles.mealItem}>
       <Pressable
+        onPress={onPress}
         android_ripple={{color: '#ccc'}}
         style={({pressed}) => [(pressed && Platform.OS === 'ios') ? styles.itemPressed : null]}
       >
