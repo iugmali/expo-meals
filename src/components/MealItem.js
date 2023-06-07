@@ -8,7 +8,7 @@ const MealItem = ({title, imageUrl, duration, complexity, affordability, onPress
         android_ripple={{color: '#ccc'}}
         style={({pressed}) => [(pressed && Platform.OS === 'ios') ? styles.itemPressed : null]}
       >
-        <View>
+        <View style={styles.innerContainer}>
           <View>
             <Image source={{uri: imageUrl}} style={styles.image} />
             <Text style={styles.title}>{title}</Text>
