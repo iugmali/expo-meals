@@ -1,9 +1,12 @@
 import {Image, Platform, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import {MEALS} from "../data/dummy-data";
-import {useLayoutEffect} from "react";
+import {useContext, useLayoutEffect} from "react";
 import Ionicons from '@expo/vector-icons/Ionicons';
+import {FavoritesContext} from "../store/context/favorites-context";
+import {useDispatch, useSelector} from "react-redux";
+import {addFavorite, removeFavorite} from "../store/redux/favorites";
 
-const MealDetails = ({route, navigation}) => {
+const MealDetailsScreen = ({route, navigation}) => {
   const {id,
     categoryIds,
     title,
@@ -18,16 +21,33 @@ const MealDetails = ({route, navigation}) => {
     isVegetarian,
     isLactoseFree} = MEALS.find((m) => m.id === route.params.mealId)
 
+  const favoriteMealsIds = useSelector((state) => state.favoriteMeals.ids)
+  // const favoriteMealsCtx = useContext(FavoritesContext);
+  // const mealIsFavorite = favoriteMealsCtx.ids.includes(id);
+  const mealIsFavorite = favoriteMealsIds.includes(id);
+  const dispatch = useDispatch()
+
+  const changeFavoriteStatusHandler = () => {
+    if (mealIsFavorite) {
+      // favoriteMealsCtx.removeFavorite(id);
+      dispatch(removeFavorite({id}))
+    } else {
+      // favoriteMealsCtx.addFavorite(id);
+      dispatch(addFavorite({id}))
+
+    }
+  };
+
   useLayoutEffect(() => {
     navigation.setOptions({
       title: title,
       headerRight: () => (
-          <Pressable>
-            <Ionicons name={"star"} size={24} color={"white"} />
+          <Pressable onPress={changeFavoriteStatusHandler}>
+            <Ionicons name={mealIsFavorite ? "star" : "star-outline"} size={24} color={"white"} />
           </Pressable>
         )
     })
-  }, [navigation, title])
+  }, [navigation, title, changeFavoriteStatusHandler])
 
   return (
       <ScrollView>
@@ -52,7 +72,7 @@ const MealDetails = ({route, navigation}) => {
   )
 }
 
-export default MealDetails
+export default MealDetailsScreen
 
 const styles = StyleSheet.create({
   headerRight: {
